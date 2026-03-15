@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="theme-color" content="#0d0d0f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="FORGE — Tracker de racha NoFap. Controla tu energía, construye disciplina.">
+  <title>FORGE — Racha NoFap</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ══════════ WELCOME SCREEN ══════════ -->
+<div id="welcome-screen">
+  <div class="welcome-inner">
+    <div class="welcome-logo">FORGE</div>
+    <div class="welcome-fire">🔥</div>
+    <div class="welcome-title">Hoy empieza<br><span>tu racha</span></div>
+    <p class="welcome-sub">Cada día que eliges ser mejor construye al hombre que quieres ser.</p>
+
+    <div class="welcome-commitment">
+      <div class="commitment-title">Mi compromiso</div>
+      <div class="commitment-item">
+        <div class="commitment-dot"></div>
+        Elijo controlar mi energía y mi atención
+      </div>
+      <div class="commitment-item">
+        <div class="commitment-dot"></div>
+        Voy a construir hábitos que me hagan más fuerte
+      </div>
+      <div class="commitment-item">
+        <div class="commitment-dot"></div>
+        Si caigo, me levanto y empiezo de nuevo
+      </div>
+    </div>
+
+    <button class="btn-start" onclick="startStreak()">Empezar racha ahora</button>
+    <div class="welcome-note">Tu racha se guardará en este dispositivo</div>
+  </div>
+</div>
+
+<!-- ══════════ NAV ══════════ -->
+<nav>
+  <div class="logo">FORGE</div>
+  <div class="nav-tabs">
+    <button class="tab active" onclick="showPage('home', this)">Inicio</button>
+    <button class="tab" onclick="showPage('journal', this)">Diario</button>
+    <button class="tab" onclick="showPage('stats', this)">Progreso</button>
+  </div>
+</nav>
+
+<!-- ══════════ HOME PAGE ══════════ -->
+<div id="page-home" class="page active">
+  <div class="container">
+
+    <!-- Hero counter -->
+    <div class="hero">
+      <div class="days-num" id="days-num">0</div>
+      <div class="days-unit">días sin recaída</div>
+      <div class="hrs-mins" id="hrs-mins">0h 0m</div>
+      <div class="streak-pill" id="streak-pill">Empieza hoy</div>
+    </div>
+
+    <!-- Progress to next milestone -->
+    <div class="card">
+      <div class="card-title">Próximo hito</div>
+      <div class="prog-wrap">
+        <div class="prog-meta">
+          <span id="prog-from">Día 0</span>
+          <span id="prog-to">Día 1 →</span>
+        </div>
+        <div class="prog-bar">
+          <div class="prog-fill" id="prog-fill" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Milestones -->
+    <div class="card">
+      <div class="card-title">Hitos</div>
+      <div class="ms-grid" id="ms-grid"></div>
+    </div>
+
+    <!-- Daily quote -->
+    <div class="card">
+      <div class="card-title">Frase del día</div>
+      <div class="quote-text" id="quote-text"></div>
+      <div class="quote-author" id="quote-author"></div>
+    </div>
+
+    <!-- Actions -->
+    <div class="btn-row">
+      <button class="btn btn-danger" onclick="showConfirmReset()">↩ Reiniciar</button>
+      <button class="btn btn-accent" onclick="openEmergency()">⚡ Emergencia</button>
+    </div>
+
+    <div id="confirm-reset">
+      <p>¿Reiniciar tu racha? Esto no se puede deshacer.</p>
+      <div class="btn-row">
+        <button class="btn" onclick="cancelReset()">Cancelar</button>
+        <button class="btn btn-danger" onclick="doReset()">Sí, reiniciar</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════ JOURNAL PAGE ══════════ -->
+<div id="page-journal" class="page">
+  <div class="container">
+
+    <div class="card">
+      <div class="card-title">Nueva entrada</div>
+      <textarea
+        class="journal-input"
+        id="journal-input"
+        rows="4"
+        placeholder="¿Cómo te sientes hoy? ¿Qué te desafió? ¿Qué te hizo fuerte?..."
+      ></textarea>
+      <button class="btn btn-accent btn-full" style="margin-top:.75rem" onclick="saveEntry()">
+        Guardar entrada
+      </button>
+    </div>
+
+    <div class="card-title" style="margin-bottom:.6rem">Entradas anteriores</div>
+    <div id="entries-list"></div>
+
+  </div>
+</div>
+
+<!-- ══════════ STATS PAGE ══════════ -->
+<div id="page-stats" class="page">
+  <div class="container">
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-num" id="stat-days">0</div>
+        <div class="stat-lbl">Días actuales</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="stat-best">0</div>
+        <div class="stat-lbl">Mejor racha</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="stat-entries">0</div>
+        <div class="stat-lbl">Entradas diario</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="stat-ms">0</div>
+        <div class="stat-lbl">Hitos logrados</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Beneficios desbloqueados</div>
+      <div class="timeline" id="benefits-timeline"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════ EMERGENCY MODAL ══════════ -->
+<div class="modal-overlay" id="emergency-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeEmergency()">✕</button>
+    <h2>Modo emergencia</h2>
+    <p id="tip-text"></p>
+    <button class="btn btn-accent btn-full" onclick="nextTip()">Otro tip →</button>
+    <button class="btn btn-full" style="margin-top:.5rem" onclick="closeEmergency()">Ya estoy bien</button>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="js/app.js"></script>
+
+</body>
+</html>
